@@ -42,9 +42,12 @@ double sum_vector ( double * vec , long n ){
 }
 
 int main (int argc , char ** argv){
-	printf("%.10f\n", sum_of_inf());
-	double * vec = gen_vector(atoi(argv[1]));
-	double s = sum_vector( vec, atoi(argv[1]));
-	printf("%.10f\n", s);
+	double k;
+	double s = sum_of_inf();
+	printf("s = %.10f\n", s);
+	for (int i = 3; i <= 14; i++){
+		k = pow(2, i);
+		printf("s - 2^%d \t %.10f\n", i, s - sum_vector( gen_vector(k), k));
+	}
 	return 0;
 }
