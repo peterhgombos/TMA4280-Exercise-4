@@ -13,6 +13,10 @@ double * gen_vector ( long n ) {
 	return a;
 }
 
+double sum_of_inf(){
+	return pow(M_PI, 2)/6;
+}
+
 double sum_vector ( double * vec , long n ){
 	double * limit = vec + n , out = 0;
 
@@ -38,6 +42,7 @@ double sum_vector ( double * vec , long n ){
 }
 
 int main (int argc , char ** argv){
+	printf("%.10f\n", sum_of_inf());
 	double * vec = gen_vector(atoi(argv[1]));
 	double s = sum_vector( vec, atoi(argv[1]));
 	printf("%.10f\n", s);
