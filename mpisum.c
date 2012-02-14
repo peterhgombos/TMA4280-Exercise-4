@@ -4,13 +4,14 @@
 #include <mpi.h>
 #define pi2o6 1.6449340668482264364724151666460251892189499012067984
 
+typedef double Real;
 
-double sum_array( double* vec , long limit );
-double * genarray ( long length );
+
+Real sum_array( double* vec , long limit );
+Real * genarray ( long length );
 
 int main(int argc, char ** argv)
 {
-	//free (arr);
 	int numprocs,rank,namelen;
 	char processor_name[MPI_MAX_PROCESSOR_NAME];
 	MPI_Status status;
@@ -22,18 +23,30 @@ int main(int argc, char ** argv)
 	int partition_size = ( 2 << 14 ) / numprocs,
 		offset = ( 2 << 14 ) %  partition_size;
 
-	double * array ;
+	Real * array ;
 	if ( rank == 0 ) {
 		array = genarray( 2 << 14 );
-		double * arr_os = array+offset, sum = 0 ;
+		Real * arr_os = array+offset, sum = 0 ;
 		for ( int i = 1;  i < numprocs ; i++ ) {
 			MPI_Send ( arr_os + i * partition_size, partition_size, MPI_DOUBLE, i , 100 , MPI_COMM_WORLD);
 		}
 	}
-	else 
-	{
-		double sum = 0 ;
-		array = malloc ( partition_size * sizeof( double ) );
+	
+	if (rank == 0 ){
+		Real sum = 0 , retsum = 0;
+		for ( int i = 0 ;  i < partition_size+offset ; i++){
+			sum +=array[i];	
+		}
+		for ( int i = 1;  i < numprocs ; i++ ) {
+			MPI_Recv ( &retsum , 1 ,  MPI_DOUBLE , MPI_ANY_SOURCE , 101, MPI_COMM_WORLD, &status );
+			sum+= retsum;
+		}
+		
+		printf("Summen: %.16lf; feilen: %.16lf\n", sum, pi2o6 -sum);
+	}
+	else {
+		Real sum = 0 ;
+		array = malloc ( partition_size * sizeof( Real ) );
 		MPI_Recv( array , partition_size , MPI_DOUBLE, 0 , 100 , MPI_COMM_WORLD , &status);
 		/*
 		 * vector received, do math
@@ -43,33 +56,18 @@ int main(int argc, char ** argv)
 		{
 			sum += array[i];
 		}
-		//printf("%lf\n", sum );
 
 		/*
 		 *I is sending the data back 
 		 */
-		//printf("returning: Process %d on %s out of %d ::::sum is: %lf\n", rank, processor_name, numprocs, sum);
 		MPI_Send(&sum ,1 ,MPI_DOUBLE , 0 , 101, MPI_COMM_WORLD );
 	}
 
-	if (rank == 0 ){
-		double sum = 0 , retsum = 0;
-		for ( int i = 0 ;  i < partition_size+offset ; i++){
-			sum +=array[i];	
-		}
-		for ( int i = 1;  i < numprocs ; i++ ) {
-			MPI_Recv ( &retsum , 1 ,  MPI_DOUBLE , MPI_ANY_SOURCE , 101, MPI_COMM_WORLD, &status );
-			sum+= retsum;
-			//printf("gathering :Process %d on %s out of %d\n", rank, processor_name, numprocs);
-		}
-		
-		printf("Summen: %.16lf; feilen: %.16lf\n", sum, pi2o6 -sum);
-	}
 	MPI_Finalize();
 	return 0;
 }
 
-/*double master(double *array  , long length )
+/*Real master(double *array  , long length )
   {
   array = genarray( length );
   return array;
@@ -79,9 +77,9 @@ int main(int argc, char ** argv)
   {
   }*/
 
-double * genarray ( long length )
+Real * genarray ( long length )
 {
-	double *array = malloc ( length*sizeof(double) );
+	Real *array = malloc ( length*sizeof(double) );
 	for (int i = 1 ;i < length  ; ++i)
 	{
 		array[i] = pow ( i , -2 );
@@ -89,10 +87,9 @@ double * genarray ( long length )
 	return array;
 }
 
-double sum_array( double* vec , long limit )
+Real sum_array( double* vec , long limit )
 {
-	double *end = vec+limit, sum = 0;
-	//for ( ; vec < end ; sum = *(vec++) );
+	Real *end = vec+limit, sum = 0;
 	for ( ; vec < end ; ++vec)
 	{
 		sum += *vec;
@@ -101,6 +98,6 @@ double sum_array( double* vec , long limit )
 }
 
 // Fordi det går :)
-inline void sum_array_2(double * vec , long limit , double* acc){
-	for (double  * end = vec+limit; vec < end; *acc+=*(vec++)) ;
+inline void sum_array_2(Real * vec , long limit , double* acc){
+	for (Real  * end = vec+limit; vec < end; *acc+=*(vec++)) ;
 }
