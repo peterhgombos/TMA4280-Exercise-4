@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "oving4.h"
+#define pi2o6 1.6449340668482264364724151666460251892189499012067984
 
 double * gen_vector ( long n ) {
 	double * a = malloc ( sizeof(double) * n ) ,
@@ -14,7 +15,7 @@ double * gen_vector ( long n ) {
 }
 
 double sum_of_inf(){
-	return pow(M_PI, 2)/6;
+	return pi2o6;
 }
 
 double sum_vector ( double * vec , long n )
