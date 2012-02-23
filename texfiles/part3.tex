@@ -29,3 +29,11 @@ The differnce between the OpenMPI implementation and the combination is that the
 In addition the workers use OpenMP to paralellize their work. 
 
 
+\begin{figure}
+\caption{To achieve paralellization of reception we chose to use OpenMP's reduction in combination with {\tt MPI\_Receive}. This yields easy readable code which is paralellized. }
+\includegraphics[width=\textwidth]{flyt2}
+\end{figure}
+\begin{figure}
+\includegraphics[width=\textwidth]{flytskjema1}
+\caption{After each process is initiated and given rank, the primary process generates the full sequence alone. This is split into partitions, disjoint sets with full coverage, which is sent to each worker process. Each process, including the primary process will then take the sum of their sequence. Afterwards ay process not the primary one will proceed to send back the sum of its partition to the primary process which receives. The sums of the sums is then taken and displayed. }
+\end{figure}
