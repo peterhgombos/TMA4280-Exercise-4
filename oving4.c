@@ -5,8 +5,8 @@
 #define pi2o6 1.6449340668482264364724151666460251892189499012067984
 
 double * gen_vector ( long n ) {
-	double * a = malloc ( sizeof(double) * n ) ,
-		   *b;
+	double * a = malloc ( sizeof(double) * n );
+	double * b;
 	b = a;
 	for ( int i = 1 ; i < n + 1 ; i++ , b++ ) {
 		*b = pow ( i , -2 );
@@ -14,9 +14,6 @@ double * gen_vector ( long n ) {
 	return a;
 }
 
-double sum_of_inf(){
-	return pi2o6;
-}
 
 double sum_vector ( double * vec , long n )
 {
@@ -69,13 +66,16 @@ double sum_vector_openMP(double * vec, long n )
 	return sum;
 }
 
+inline void sum_vector_2(Real * vec , long limit , double* acc){
+	for (Real  * end = vec+limit; vec < end; *acc+=*(vec++)) ;
+}
+
 int main (int argc , char ** argv){
 	double k;
-	double s = sum_of_inf();
-	printf("s = %.10f\n", s);
+	printf("s = %.10f\n", pi2o6);
 	for (int i = 3; i <= 14; i++){
 		k = pow(2, i);
-		printf("s - 2^%d \t %.10f\n", i, s - sum_vector( gen_vector(k), k));
+		printf("s - 2^%d \t %.10f\n", i, pi2o6 - sum_vector( gen_vector(k), k));
 	}
 	return 0;
 }
