@@ -69,15 +69,6 @@ int main(int argc, char ** argv)
 	return 0;
 }
 
-/*Real master(double *array  , long length )
-  {
-  array = genarray( length );
-  return array;
-  }
-
-  int slave(  )
-  {
-  }*/
 
 Real * genarray ( long length )
 {

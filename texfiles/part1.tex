@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\begin{document}
+\section{1.}
+In our serial adder, we quite straightforwadly sum our vector recursively, from the back of the vector and stores the sum in the beginning. Please don't watch to closely on the inline version.
+
+The results from the serial implementation:
+\begin{verbatim}
+s = 1.6449340668
+s - 2^3 	 0.1175120147
+s - 2^4 	 0.0605875334
+s - 2^5 	 0.0307668040
+s - 2^6 	 0.0155035654
+s - 2^7 	 0.0077820619
+s - 2^8 	 0.0038986305
+s - 2^9 	 0.0019512189
+s - 2^10 	 0.0009760858
+s - 2^11 	 0.0004881621
+s - 2^12 	 0.0002441108
+s - 2^13 	 0.0001220629
+s - 2^14 	 0.0000610333
+\end{verbatim}
+
+\input{part3}
+
+
+\end{document}
