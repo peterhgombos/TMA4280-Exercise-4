@@ -30,6 +30,7 @@ int main(int argc, char ** argv)
 		for ( int i = 1;  i < numprocs ; i++ ) {
 			MPI_Send ( arr_os + i * partition_size, partition_size, MPI_DOUBLE, i , 100 , MPI_COMM_WORLD);
 		}
+		printf("%s\n", processor_name );
 	}
 	
 	if (rank == 0 ){
@@ -45,6 +46,7 @@ int main(int argc, char ** argv)
 		printf("Summen: %.16lf; feilen: %.16lf\n", sum, pi2o6 -sum);
 	}
 	else {
+		printf("%s\n", processor_name );
 		Real sum = 0 ;
 		array = malloc ( partition_size * sizeof( Real ) );
 		MPI_Recv( array , partition_size , MPI_DOUBLE, 0 , 100 , MPI_COMM_WORLD , &status);
