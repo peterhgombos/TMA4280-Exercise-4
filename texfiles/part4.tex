@@ -1,0 +1,34 @@
+\section{}
+Hmmm, yes it works. 
+
+\section{Which MPI-calls are convenient / neccesary}
+MPI_Send(...) and  MPI_Recv() were the only ones we used apart from the initialization calls. 
+MPI_Reduce could be used instead of a for loop with MPI_Recv, which may have been more convenient than our solution.  
+
+MPI_Init, MPI_Comm_size and MPI_Comm_rank were neccesary to get the info about the processes and make only one process do a given task. 
+MPI_Get_processor_name were convenient we thought for following the process in more detail, but we never got different names from any run of the program, but from documentation this should have yielded a unique identifier of the process. 
+
+\section{6}
+No, they should not be the same in the sequential singleprocessor program and the multithreaded/multiprocessed versions. Taking the sum sequential could give troubles when the accumulated sum is getting to the point where we loose some precision when adding the next element. 
+
+From a precision poitn of view the best way to add floating poitn numbers would be to put them on a min-heap and pop two, sum and push back to stack untill the stack contains one number. This howerver is rather inefficient ($n\log n $) and not really that much better than splitting into shorter arrays and doing each sequentially. 
+
+By increasing the number of processes doing the sums of sequences we should get better precision and it seems we do when we look at the results, the error is being reduced if we increase the process/thread number. 
+
+We  do however start to loose precision when we increase the process/thread count, due to 80-bit internal floating point registers on x86 we believe. That results in taking a sum out of the registers makes you possibly loose some precision opposed to just sequentially adding in these registers. 
+
+All these things leads us to think that we should not have the same results for sequential, 2 processes and 8 processes. Although the math technically is the same it differs due to floating point representation. 
+
+\section{7}
+Since we generate and therefore hold it in memory on one process and copies parts of it to other processes we have a memory requirement which is $2^n\cdot\left(1-\frac{\text{nproc}-1}{\text{nproc}}\right)+\text{overhead}$. 
+
+\section{8}
+We concluded that $n^{-2}$ would require two floating point operations so generating it would require $2n$ operations. 
+
+Assuming sequential operation: $3n = 2n+n$. Technically there is a minus one in there but it is insignificant. 
+
+No, only one process does the work of generating the list, which is a significant part of the job. 
+
+\section{9}
+hell no! We paralellized the least intensive part of the program. 
+

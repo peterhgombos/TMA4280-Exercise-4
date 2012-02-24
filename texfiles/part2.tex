@@ -1,6 +1,7 @@
 \section{2.}
 Our OpenMP parallelization is also quite straightforward. First we do some checks to catch some edge cases. Our sum is a basic paralell for loop with a reduction on sum.
 
+\begin{verbatim}
 s - 2^3 	 1.5274220521541950;error0.1175120146940314
 s - 2^4 	 1.5843465334449871;error0.0605875334032393
 s - 2^5 	 1.6141672628279242;error0.0307668040203022
@@ -13,3 +14,4 @@ s - 2^11 	 1.6444459047881168;error0.0004881620601096
 s - 2^12 	 1.6446899560231332;error0.0002441108250932
 s - 2^13 	 1.6448120039860050;error0.0001220628622214
 s - 2^14 	 1.6448730335545856;error0.0000610332936408
+\end{verbatim}
