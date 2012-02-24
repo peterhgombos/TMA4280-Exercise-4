@@ -43,7 +43,21 @@ s^14	Sum: 1.6448730298292966; error: 0.0000610370189298
 The differnce between the OpenMPI implementation and the combination is that the primary thread is using OpenMP to split the job into several senders and using the same technique for receiving. 
 In addition the workers use OpenMP to paralellize their work. 
 
-
+The sum of the sequenses up to the given number, and the corresponding error.
+\begin{verbatim}
+Summen: 1.5117970521541950; feilen: 0.1331370146940314
+Summen: 1.5804402834449871; feilen: 0.0644937834032393
+Summen: 1.6131907003279244; feilen: 0.0317433665203020
+Summen: 1.6291863607838877; feilen: 0.0157477060643387
+Summen: 1.6370909697982119; feilen: 0.0078430970500145
+Summen: 1.6410201775196174; feilen: 0.0039138893286090
+Summen: 1.6429790332578305; feilen: 0.0019550335903959
+Summen: 1.6439570273558475; feilen: 0.0009770394923789
+Summen: 1.6444456663695342; feilen: 0.0004884004786923
+Summen: 1.6446898964184800; feilen: 0.0002441704297464
+Summen: 1.6448119890848460; feilen: 0.0001220777633804
+Summen: 1.6448730298293031; feilen: 0.0000610370189233
+\end{verbatim}
 \begin{figure}
 \caption{To achieve paralellization of reception we chose to use OpenMP's reduction in combination with {\tt MPI\_Receive}. This yields easy readable code which is paralellized. }
 \includegraphics[width=\textwidth]{flyt2}
