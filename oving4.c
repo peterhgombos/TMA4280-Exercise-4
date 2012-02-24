@@ -61,7 +61,7 @@ double sum_vector_openMP(double * vec, long n )
 	// Sum the contents of the vector and store the sum in the beginning of the array. The loop will stop at the second last element should it be odd membered, the if afterwards will handle that case;
 #pragma omp paralell for reduction( + : sum )
 	for ( ; ptr < limit; ++ptr ){
-		sum= ptr[0];
+		sum+= ptr[0];
 	}
 	return sum;
 }
@@ -75,7 +75,8 @@ int main (int argc , char ** argv){
 	printf("s = %.10f\n", pi2o6);
 	for (int i = 3; i <= 14; i++){
 		k = pow(2, i);
-		printf("s - 2^%d \t %.10f\n", i, pi2o6 - sum_vector( gen_vector(k), k));
+		double sum = sum_vector_openMP( gen_vector(k), k);
+		printf("s - 2^%d \t %.16f; error%.16f\n", i, sum, pi2o6-sum) ;
 	}
 	return 0;
 }
