@@ -101,3 +101,5 @@ Real sum_array( double* vec , long limit )
 inline void sum_array_2(Real * vec , long limit , double* acc){
 	for (Real  * end = vec+limit; vec < end; *acc+=*(vec++)) ;
 }
+
+//comment!
