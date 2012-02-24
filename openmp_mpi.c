@@ -27,6 +27,7 @@ int main(int argc, char ** argv)
 	if ( rank == 0 ) {
 		array = genarray( 2 << 14 );
 		Real sum = 0 ;
+
 		for ( int i = 0;  i < numprocs ; i++ ) {
 			MPI_Send ( array + i * partition_size, partition_size, MPI_DOUBLE, i , 100 , MPI_COMM_WORLD);
 		}
@@ -38,12 +39,14 @@ int main(int argc, char ** argv)
 		/*
 		 * vector received, do math
 		 */
-
+	}
+	{
 		#pragma omp paralell for reduction( +:sum)
 		for ( int i = 0 ; i < partition_size ; ++i )
 		{
 			sum += array[i];
 		}
+		printf("%lf\n", sum);
 
 		/*
 		 *I is sending the data back 
@@ -52,11 +55,13 @@ int main(int argc, char ** argv)
 	}
 
 	if (rank == 0 ){
+		double summ = sum;
 #pragma omp paralell for reduction( + : sum )
 		for ( int i = 1;  i < numprocs ; i++ ) {
 			MPI_Recv ( &sum , 1 ,  MPI_DOUBLE , MPI_ANY_SOURCE , 101, MPI_COMM_WORLD, &status );
 		}
 
+		sum+=summ;
 		printf("Summen: %.16lf; feilen: %.16lf\n", sum, pi2o6 -sum);
 	}
 
