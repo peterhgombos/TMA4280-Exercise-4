@@ -2,9 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
-
+\usepackage{listings}
 \begin{document}
-\section{1.}
+\section{OpenMP}
 In our serial adder, we quite straightforwadly sum our vector recursively, from the back of the vector and stores the sum in the beginning. Please don't watch to closely on the inline version.
 
 The results from the serial implementation:
@@ -26,6 +26,13 @@ s - 2^14 	 0.0000610333
 
 \include{part2}
 \include{part3}
+
+\lstinputlisting[language=C]{../oving4.c}
+\lstinputlisting[language=C]{../mpisum.c}
+%//\lstinputlisting[language=C]{../openmp_mpi.c}
+
+
+
 
 
 \end{document}
