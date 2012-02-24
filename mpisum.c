@@ -6,26 +6,37 @@
 
 typedef double Real;
 
+void iter(int length);
 
 Real sum_array( double* vec , long limit );
 Real * genarray ( long length );
 
+int numprocs,rank,namelen;
+char processor_name[MPI_MAX_PROCESSOR_NAME];
+MPI_Status status;
+
 int main(int argc, char ** argv)
 {
-	int numprocs,rank,namelen;
-	char processor_name[MPI_MAX_PROCESSOR_NAME];
-	MPI_Status status;
-	MPI_Init( &argc, &argv);
+	MPI_Init(&argc, &argv);
 	MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name(processor_name, &namelen);
+	for(int i = 3; i < 15; i++){
+		iter(i);
+	}
+	MPI_Finalize();
+	return 0;
+}
 
-	int partition_size = ( 1 << 14 ) / numprocs,
-		offset = ( 1 << 14 ) %  partition_size;
+void iter(int length)
+{
+
+	int partition_size = ( 1 <<length  ) / numprocs,
+		offset = ( 1<< length) %  partition_size;
 
 	Real * array ;
 	if ( rank == 0 ) {
-		array = genarray( 1 << 14 );
+		array = genarray(1<< length);
 		Real * arr_os = array+offset, sum = 0 ;
 		for ( int i = 1;  i < numprocs ; i++ ) {
 			MPI_Send ( arr_os + i * partition_size, partition_size, MPI_DOUBLE, i , 100 , MPI_COMM_WORLD);
@@ -42,10 +53,9 @@ int main(int argc, char ** argv)
 			sum+= retsum;
 		}
 		
-		printf("Summen: %.16lf; feilen: %.16lf\n", sum, pi2o6 -sum);
+		printf("s^%d\tSummen: %.16lf; feilen: %.16lf\n", length, sum, pi2o6 -sum);
 	}
 	else {
-		printf("%s\n", processor_name );
 		Real sum = 0 ;
 		array = malloc ( partition_size * sizeof( Real ) );
 		MPI_Recv( array , partition_size , MPI_DOUBLE, 0 , 100 , MPI_COMM_WORLD , &status);
@@ -64,8 +74,6 @@ int main(int argc, char ** argv)
 		MPI_Send(&sum ,1 ,MPI_DOUBLE , 0 , 101, MPI_COMM_WORLD );
 	}
 
-	MPI_Finalize();
-	return 0;
 }
 
 

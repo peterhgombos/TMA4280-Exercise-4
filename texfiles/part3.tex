@@ -23,12 +23,41 @@ Every other thread waits to receive its part.
 At this point every thread got one partition of the array, so they all find the sum of the contents in their partition. 
 Every thread except the primary thread then proceeds to send the data back to the primary thread, which have been reveiving data from the threads and makes the final sum. 
 
+The sum of the sequenses up to the given number, and the corresponding error.
+\begin{verbatim}
+s^3	Sum: 1.5117970521541948; error: 0.1331370146940316
+s^4	Sum: 1.5804402834449871; error: 0.0644937834032393
+s^5	Sum: 1.6131907003279244; error: 0.0317433665203020
+s^6	Sum: 1.6291863607838877; error: 0.0157477060643387
+s^7	Sum: 1.6370909697982121; error: 0.0078430970500143
+s^8	Sum: 1.6410201775196180; error: 0.0039138893286084
+s^9	Sum: 1.6429790332578305; error: 0.0019550335903959
+s^10	Sum: 1.6439570273558473; error: 0.0009770394923792
+s^11	Sum: 1.6444456663695342; error: 0.0004884004786923
+s^12	Sum: 1.6446898964184786; error: 0.0002441704297478
+s^13	Sum: 1.6448119890848441; error: 0.0001220777633824
+s^14	Sum: 1.6448730298292966; error: 0.0000610370189298
+\end{verbatim}
 
 \section{OpenMP and OpenMPI }
 The differnce between the OpenMPI implementation and the combination is that the primary thread is using OpenMP to split the job into several senders and using the same technique for receiving. 
 In addition the workers use OpenMP to paralellize their work. 
 
-
+The sum of the sequenses up to the given number, and the corresponding error.
+\begin{verbatim}
+Summen: 1.5117970521541950; feilen: 0.1331370146940314
+Summen: 1.5804402834449871; feilen: 0.0644937834032393
+Summen: 1.6131907003279244; feilen: 0.0317433665203020
+Summen: 1.6291863607838877; feilen: 0.0157477060643387
+Summen: 1.6370909697982119; feilen: 0.0078430970500145
+Summen: 1.6410201775196174; feilen: 0.0039138893286090
+Summen: 1.6429790332578305; feilen: 0.0019550335903959
+Summen: 1.6439570273558475; feilen: 0.0009770394923789
+Summen: 1.6444456663695342; feilen: 0.0004884004786923
+Summen: 1.6446898964184800; feilen: 0.0002441704297464
+Summen: 1.6448119890848460; feilen: 0.0001220777633804
+Summen: 1.6448730298293031; feilen: 0.0000610370189233
+\end{verbatim}
 \begin{figure}
 \caption{To achieve paralellization of reception we chose to use OpenMP's reduction in combination with {\tt MPI\_Receive}. This yields easy readable code which is paralellized. }
 \includegraphics[width=\textwidth]{flyt2}

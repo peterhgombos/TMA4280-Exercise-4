@@ -81,17 +81,3 @@ Real * genarray ( long length )
 	return array;
 }
 
-Real sum_array( double* vec , long limit )
-{
-	Real *end = vec+limit, sum = 0;
-	for ( ; vec < end ; ++vec)
-	{
-		sum += *vec;
-	}
-	return sum;
-}
-
-// Fordi det går :)
-inline void sum_array_2(Real * vec , long limit , double* acc){
-	for (Real  * end = vec+limit; vec < end; *acc+=*(vec++)) ;
-}
